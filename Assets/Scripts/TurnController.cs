@@ -11,17 +11,30 @@ public class TurnController : MonoBehaviour
     // Unit Control Var
     public GameObject selectedUnit; // Unit selected to move
     public bool unitSelected = false; // Check if unit is currently selected
+    public GameObject defaultUnit; // The default unit selected when game starts
 
     // Turn Control Var
     public bool playerTurn = true; // Check if player turn
     public bool enemyTurn = false; // Check if enemy turn
+    public Button changeTurn; // Pretty self explanatory
+    public Text turn;
 
-    public Button changeTurn;
+    // Selected Unit Var
+    public Text unit; // UI Text with unit name
+    public Text atkStrength; // UI Text with unit atk
+    public Text defStrength; // UI Text with unit def
+    public float unitAtk; 
+    public float unitDef;
+    public string unitType;
+    public float unitDistance;
+    public float maximumMoves;
 
     // Use this for initialization
     void Start()
     {
-
+        unitAtk = CapsuleUnit.atk;
+        unitDef = CapsuleUnit.def;
+        unitType = CapsuleUnit.playerClass;
     }
 
     // Update is called once per frame
@@ -29,6 +42,34 @@ public class TurnController : MonoBehaviour
     {
         SelectUnit();
         MoveUnit();
+        UpdateSelectedUnitUI();
+        changeTurnUI();
+    }
+
+    void changeTurnUI()
+    {
+        if (playerTurn == true)
+        {
+            turn.text = ("Player Turn");
+        }
+        else if (enemyTurn == true)
+        {
+            turn.text = ("Enemy Turn");
+        }
+    }
+
+    void UpdateSelectedUnitUI()
+    {
+        if (unitSelected == true)
+        {
+            // TODO SELECTED UNIT CHARACTERISTICS CHANGE IN UI
+        }
+        else
+        {
+            unit.text = (unitType);
+            atkStrength.text = ("ATK: " + unitAtk);
+            defStrength.text = ("DEF: " + unitDef);
+        }
     }
 
     void SelectUnit() // Selects a unit to move 
@@ -46,6 +87,8 @@ public class TurnController : MonoBehaviour
 
                     if (hitObject.tag == "PlayerUnit")
                     {
+                        maximumMoves = CapsuleUnit.maxMoves;
+                        // TODO SELECTED UNIT CHARACTERISTICS
                         Debug.Log("Player Unit Selected");
                         selectedUnit = hitObject;
                         unitSelected = true; // Tells the game that there is currently a unit selected
@@ -61,18 +104,27 @@ public class TurnController : MonoBehaviour
         {
             if (unitSelected == true)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (maximumMoves >= 1)
                 {
-                    Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hitResults;
-                    if (Physics.Raycast(mousePos, out hitResults))
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        GameObject hitObject = hitResults.collider.gameObject;
-
-                        if (hitObject.tag == "Tile")
+                        Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+                        RaycastHit hitResults;
+                        if (Physics.Raycast(mousePos, out hitResults))
                         {
-                            selectedUnit.transform.position = hitObject.transform.position;
-                            unitSelected = false; // Tells the game that there is no longer a unit selected
+                            GameObject hitObject = hitResults.collider.gameObject;
+                            unitDistance = Vector3.Distance(selectedUnit.transform.position,
+                                                            hitObject.transform.position);
+                            if (hitObject.tag == "Tile")
+                            {
+                                if (unitDistance <= 4)
+                                {
+                                    maximumMoves -= 1;
+                                    // TODO HIGHLIGHT IN RANGE TILES
+                                    selectedUnit.transform.position = hitObject.transform.position;
+                                    unitSelected = false; // Tells the game that there is no longer a unit selected
+                                }
+                            }
                         }
                     }
                 }
@@ -86,7 +138,6 @@ public class TurnController : MonoBehaviour
         {
             playerTurn = false;
             enemyTurn = true;
-            Debug.Log("Enemy Phase");
         }
     }
 }
