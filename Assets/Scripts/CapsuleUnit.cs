@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class CapsuleUnit : MonoBehaviour {
 
-    public static string playerClass = "Capsule";
-    public static float atk = 10f;
-    public static float def = 5f;
-    public static float health = 10f;
-    public static float maxMoves = 1f;
-    public static bool unitIsSelectable = true;
+    public string playerClass = "Capsule";
+    public float atk = 10f;
+    public float def = 5f;
+    public float health = 10f;
+    public int maxMoves = 1;
+    public int maxMaxMoves = 1;
+    public bool unitIsSelectable = true;
+    public float travelDist = 4;
 
 	// Use this for initialization
 	void Start () {
