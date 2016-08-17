@@ -30,7 +30,7 @@ public class TileController : MonoBehaviour {
 
     void HighlightTile()
     {
-        if (turnController.GetComponent<TurnController>().unitSelected == true && thisUnitDistance <= turnController.GetComponent<TurnController>().selectedUnit.GetComponent<CapsuleUnit>().travelDist)
+        if (turnController.GetComponent<TurnController>().unitSelected == true && thisUnitDistance <= turnController.GetComponent<TurnController>().selectedUnit.GetComponent<CapsuleUnit>().travelDist && turnController.GetComponent<TurnController>().selectedUnit.GetComponent<CapsuleUnit>().maxMoves >= 1)
         {
             meshRenderer.material = selectable;
         }

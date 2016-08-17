@@ -23,6 +23,14 @@ public class TurnController : MonoBehaviour
     public Text atkStrength; // UI Text with unit atk
     public Text defStrength; // UI Text with unit def
     public float unitDistance; // Distance to the tile
+    public Text health; // UI Text with unit health
+
+    // Battle Var
+    public float AttackerTempAtk;
+    public float DefenderTempAtk;
+    public int playerUnits = 5;
+    public int enemyUnits = 5;
+
 
     // Use this for initialization
     void Start()
@@ -39,6 +47,7 @@ public class TurnController : MonoBehaviour
         MoveUnitBlue();
         UpdateSelectedUnitUI();
         ChangeTurnUI();
+        LoseGame();
     }
 
     void ChangeTurnUI()
@@ -60,6 +69,7 @@ public class TurnController : MonoBehaviour
             unit.text = (selectedUnit.GetComponent<CapsuleUnit>().playerClass);
             atkStrength.text = ("ATK: " + selectedUnit.GetComponent<CapsuleUnit>().atk);
             defStrength.text = ("DEF: " + selectedUnit.GetComponent<CapsuleUnit>().def);
+            health.text = ("Health: " + selectedUnit.GetComponent<CapsuleUnit>().health);
         }
     }
 
@@ -79,7 +89,6 @@ public class TurnController : MonoBehaviour
                     if (hitObject.tag == "PlayerUnit")
                     {
                         // maximumMoves = CapsuleUnit.maxMoves;
-                        // TODO SELECTED UNIT CHARACTERISTICS
                         Debug.Log("Red Player Unit Selected");
                         selectedUnit = hitObject;
                         unitSelected = true; // Tells the game that there is currently a unit selected
@@ -105,7 +114,6 @@ public class TurnController : MonoBehaviour
                     if (hitObject.tag == "EnemyUnit")
                     {
                         // maximumMoves = CapsuleUnit.maxMoves;
-                        // TODO SELECTED UNIT CHARACTERISTICS
                         Debug.Log("Blue Player Unit Selected");
                         selectedUnit = hitObject;
                         unitSelected = true; // Tells the game that there is currently a unit selected
@@ -137,8 +145,16 @@ public class TurnController : MonoBehaviour
                                 if (unitDistance <= selectedUnit.GetComponent<CapsuleUnit>().travelDist)
                                 {
                                     selectedUnit.GetComponent<CapsuleUnit>().maxMoves -= 1;
-                                    // TODO HIGHLIGHT IN RANGE TILES
                                     selectedUnit.transform.position = hitObject.transform.position;
+                                    unitSelected = false; // Tells the game that there is no longer a unit selected
+                                }
+                            }
+                            else if (hitObject.tag == "EnemyUnit")
+                            {
+                                if (unitDistance <= selectedUnit.GetComponent<CapsuleUnit>().travelDist)
+                                {
+                                    Battle(hitObject);
+                                    selectedUnit.GetComponent<CapsuleUnit>().maxMoves -= 1;
                                     unitSelected = false; // Tells the game that there is no longer a unit selected
                                 }
                             }
@@ -168,11 +184,19 @@ public class TurnController : MonoBehaviour
                                                             hitObject.transform.position);
                             if (hitObject.tag == "Tile")
                             {
-                                if (unitDistance <= 4)
+                                if (unitDistance <= selectedUnit.GetComponent<CapsuleUnit>().travelDist)
                                 {
                                     selectedUnit.GetComponent<CapsuleUnit>().maxMoves -= 1;
-                                    // TODO HIGHLIGHT IN RANGE TILES
                                     selectedUnit.transform.position = hitObject.transform.position;
+                                    unitSelected = false; // Tells the game that there is no longer a unit selected
+                                }
+                            }
+                            else if (hitObject.tag == "PlayerUnit")
+                            {
+                                if (unitDistance <= selectedUnit.GetComponent<CapsuleUnit>().travelDist)
+                                {
+                                    Battle(hitObject);
+                                    selectedUnit.GetComponent<CapsuleUnit>().maxMoves -= 1;
                                     unitSelected = false; // Tells the game that there is no longer a unit selected
                                 }
                             }
@@ -181,6 +205,14 @@ public class TurnController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Battle(GameObject hitObject)
+    {
+        AttackerTempAtk = selectedUnit.GetComponent<CapsuleUnit>().atk - hitObject.GetComponent<CapsuleUnit>().def;
+        hitObject.GetComponent<CapsuleUnit>().health -= AttackerTempAtk;
+        DefenderTempAtk = hitObject.GetComponent<CapsuleUnit>().atk - selectedUnit.GetComponent<CapsuleUnit>().def;
+        selectedUnit.GetComponent<CapsuleUnit>().health -= AttackerTempAtk;
     }
 
     public void EndTurn() // Start enemy turn
@@ -200,6 +232,22 @@ public class TurnController : MonoBehaviour
         foreach (CapsuleUnit unit in GameObject.FindObjectsOfType<CapsuleUnit>())
         {
             unit.maxMoves = unit.maxMaxMoves;
+        }
+    }
+
+    public void LoseGame()
+    {
+        if (playerUnits <= 0)
+        {
+
+        }
+        else if (enemyUnits <= 0)
+        {
+
+        }
+        else if (playerUnits <= 0 && enemyUnits <= 0)
+        {
+
         }
     }
 }
