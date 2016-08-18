@@ -14,8 +14,10 @@ public class CapsuleUnit : MonoBehaviour {
     public bool unitIsSelectable = true;
     public float travelDist = 4;
 
-	// Use this for initialization
-	void Start () {
+    public TurnController turnController;
+
+    // Use this for initialization
+    void Start () {
 
 	}
 	
@@ -23,6 +25,14 @@ public class CapsuleUnit : MonoBehaviour {
 	void Update () {
         if (health <= 0)
         {
+            if (this.gameObject.tag == "PlayerUnit")
+            {
+                turnController.GetComponent<TurnController>().playerUnits -= 1;
+            }
+            if (this.gameObject.tag == "EnemyUnit")
+            {
+                turnController.GetComponent<TurnController>().enemyUnits -= 1;
+            }
             Destroy(this.gameObject);
         }
 
