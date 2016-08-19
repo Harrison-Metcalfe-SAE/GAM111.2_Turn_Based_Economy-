@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class TileController : MonoBehaviour {
 
-    public TurnController turnController;
+    public TurnController turnController; // It's LITERALLY in the name
 
-    public Material notSelectable;
+    public Material notSelectable; // The material for when it's unselectable
 
-    public Material selectable;
+    public Material selectable; // The material for when it's selectable
 
-    public MeshRenderer meshRenderer;
+    public MeshRenderer meshRenderer; // The Tile mesh renderer
 
-    public float thisUnitDistance;
+    public float thisUnitDistance; // The distance from unit to the tile
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +28,7 @@ public class TileController : MonoBehaviour {
                                                                                         this.transform.position);
     }
 
-    void HighlightTile()
+    void HighlightTile() // Highlights tile based on the distance to the selected unit
     {
         if (turnController.GetComponent<TurnController>().unitSelected == true && thisUnitDistance <= turnController.GetComponent<TurnController>().selectedUnit.GetComponent<CapsuleUnit>().travelDist && turnController.GetComponent<TurnController>().selectedUnit.GetComponent<CapsuleUnit>().maxMoves >= 1)
         {

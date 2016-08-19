@@ -3,8 +3,8 @@ using System.Collections;
 
 public class GridGenerator : MonoBehaviour {
 
-    public Vector2 gridSize;
-    public GameObject tile;
+    public Vector2 gridSize; // The gridsize
+    public GameObject tile; // The tile
 
 	// Use this for initialization
 	void Start ()
@@ -12,7 +12,7 @@ public class GridGenerator : MonoBehaviour {
         GenerateTiles();
 	}
 	
-    void GenerateTiles()
+    void GenerateTiles() // A nested for-loop that spawns the grid
     {
         Vector3 loc;
 

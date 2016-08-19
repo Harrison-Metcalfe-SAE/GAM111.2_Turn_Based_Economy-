@@ -3,10 +3,8 @@ using System.Collections;
 
 public class AudioManager : MonoBehaviour {
 
-    public static AudioManager audioManager;
-    public AudioSource audioSource;
-
-    public TurnController turnController;
+    public static AudioManager audioManager; // LITERALLY in the name
+    public AudioSource audioSource; 
 
     // Use this for initialization
     void Awake () {
@@ -19,14 +17,14 @@ public class AudioManager : MonoBehaviour {
 
 	}
 
-    public void playAudio(AudioClip soundEffect)
+    public void playAudio(AudioClip soundEffect) // Plays the music
     {
         audioSource.clip = soundEffect;
         audioSource.loop = true;
         audioSource.Play();
     }
 
-    public void stopAudio()
+    public void stopAudio() // Stops the music
     {
         audioSource.Stop();
     }

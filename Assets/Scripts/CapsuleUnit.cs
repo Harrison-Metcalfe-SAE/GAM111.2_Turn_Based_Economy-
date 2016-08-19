@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class CapsuleUnit : MonoBehaviour {
 
-    public string playerClass = "Capsule";
-    public float atk = 10f;
-    public float def = 5f;
-    public float health = 10f;
-    public int maxMoves = 1;
-    public int maxMaxMoves = 1;
-    public bool unitIsSelectable = true;
-    public float travelDist = 4;
+    public string playerClass = "Capsule"; // The unit name
+    public float atk = 10f; // Attack stat
+    public float def = 5f; // Defence stat
+    public float health = 10f; // Health stat
+    public int maxMoves = 1; // The current number of moves left
+    public int maxMaxMoves = 1; // The max amount of moves that can be made
+    public bool unitIsSelectable = true; // Checks if the unit has moved yet
+    public float travelDist = 4; // How far the unit can move
 
     public TurnController turnController;
 
@@ -23,7 +23,7 @@ public class CapsuleUnit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (health <= 0)
+        if (health <= 0) // If health drops below zero then destory
         {
             if (this.gameObject.tag == "PlayerUnit")
             {
@@ -36,7 +36,7 @@ public class CapsuleUnit : MonoBehaviour {
             Destroy(this.gameObject);
         }
 
-        if (maxMoves <= 1)
+        if (maxMoves <= 1) // If unit has passed its max moves then no longer selectable
         {
             unitIsSelectable = false;
         }
